@@ -1,277 +1,1172 @@
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LKBOORIA — Elite Training</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Barlow+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap');
-
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--red:#ff4d4d;--red-dim:#cc2222;--bg:#0a0a0a;--bg2:#111;--bg3:#181818;--glass:rgba(255,255,255,0.04);--border:rgba(255,255,255,0.08);--text:#fff;--muted:#888;--muted2:#555}
-body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;overflow-x:hidden}
 
-/* NOISE OVERLAY */
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.5}
+:root{
+  --red:#e8342a;
+  --red2:#ff5a4e;
+  --red-glow:rgba(232,52,42,0.18);
+  --bg:#080808;
+  --s1:#0f0f0f;
+  --s2:#161616;
+  --s3:#1e1e1e;
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.12);
+  --text:#f0f0f0;
+  --muted:#666;
+  --muted2:#999;
+  --gold:#c9a84c;
+}
+/* LIGHT MODE */
+body.light{
+  --bg:#f5f5f5;
+  --s1:#ffffff;
+  --s2:#f0f0f0;
+  --s3:#e8e8e8;
 
-/* RADIAL GLOW BG */
-.bg-glow{position:fixed;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse,rgba(255,77,77,0.08) 0%,transparent 70%);pointer-events:none;z-index:0}
+  --text:#111;
+  --muted:#666;
+  --muted2:#555;
 
-.container{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:3rem 1.5rem 4rem}
+  --border:rgba(0,0,0,.08);
+  --border2:rgba(0,0,0,.12);
+}
 
-/* HEADER */
-.header{text-align:center;margin-bottom:3rem}
-.badge{width:72px;height:72px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ff6b6b,#cc0000);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;box-shadow:0 0 40px rgba(255,77,77,0.5),0 0 80px rgba(255,77,77,0.2);animation:pulse 3s ease-in-out infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 40px rgba(255,77,77,0.5),0 0 80px rgba(255,77,77,0.2)}50%{box-shadow:0 0 60px rgba(255,77,77,0.7),0 0 100px rgba(255,77,77,0.3)}}
-.badge i{font-size:32px;color:#fff}
-.h-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,10vw,88px);letter-spacing:4px;line-height:1;margin-bottom:.3rem;background:linear-gradient(180deg,#fff 60%,#aaa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.h-title em{-webkit-text-fill-color:var(--red);font-style:normal}
-.h-sub{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:1rem}
-.h-desc{font-size:15px;color:var(--muted);line-height:1.7;max-width:540px;margin:0 auto}
+/* Theme Button */
+.theme-btn{
+  width:40px;
+  height:40px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--s2);
+  color:var(--text);
+  border:1px solid var(--border);
+  transition:.25s;
+}
 
-/* FEATURE CARDS */
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:3rem}
-@media(max-width:600px){.feat-grid{grid-template-columns:1fr}}
-.feat{background:var(--glass);border:0.5px solid var(--border);border-radius:16px;padding:1.4rem 1.2rem;text-align:center;backdrop-filter:blur(10px);transition:transform .25s,border-color .25s,box-shadow .25s;cursor:default}
-.feat:hover{transform:translateY(-4px);border-color:rgba(255,77,77,0.3);box-shadow:0 8px 32px rgba(255,77,77,0.1)}
-.ficon{width:48px;height:48px;border-radius:12px;background:rgba(255,77,77,0.12);border:.5px solid rgba(255,77,77,0.25);display:flex;align-items:center;justify-content:center;margin:0 auto .9rem}
-.ficon i{font-size:22px;color:var(--red)}
-.ftitle{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:.5px;color:#fff;margin-bottom:.25rem}
-.fsub{font-size:13px;color:var(--muted)}
+.theme-btn:hover{
+  transform:translateY(-2px);
+  border-color:rgba(232,52,42,.4);
+}
 
-/* TABS */
-.tabs-wrap{background:rgba(255,255,255,0.03);border:.5px solid var(--border);border-radius:50px;padding:5px;display:flex;gap:4px;margin-bottom:2rem;backdrop-filter:blur(10px)}
-.tab{flex:1;padding:11px 8px;border-radius:50px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:1px;color:var(--muted);cursor:pointer;text-align:center;border:none;background:transparent;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
-.tab i{font-size:13px}
-.tab.active{background:var(--red);color:#fff;box-shadow:0 4px 20px rgba(255,77,77,0.4)}
-.tab:hover:not(.active){color:#ccc;background:rgba(255,255,255,0.05)}
+.theme-btn i{
+  font-size:18px;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Barlow',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-/* PROGRAMS GRID */
-.programs{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
-@media(max-width:500px){.programs{grid-template-columns:1fr}}
+/* ── NOISE + SCANLINES ─────────────────────────────── */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  pointer-events:none;z-index:9999;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(0,0,0,0.03) 0px,rgba(0,0,0,0.03) 1px,transparent 1px,transparent 2px);
+  mix-blend-mode:multiply;
+}
 
-/* PROGRAM CARD */
-.card{background:linear-gradient(145deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));border:.5px solid var(--border);border-radius:20px;padding:1.6rem;backdrop-filter:blur(12px);transition:transform .3s,box-shadow .3s,border-color .3s;opacity:0;transform:translateY(20px);animation:fadeUp .4s forwards}
-@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
-.card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(255,77,77,0.12),0 4px 16px rgba(0,0,0,0.4);border-color:rgba(255,77,77,0.25)}
-.card:nth-child(1){animation-delay:.05s}
-.card:nth-child(2){animation-delay:.12s}
-.card:nth-child(3){animation-delay:.19s}
+/* ── AMBIENT LIGHTS ────────────────────────────────── */
+.ambient{position:fixed;pointer-events:none;z-index:0}
+.ambient-1{
+  top:-30vh;left:50%;transform:translateX(-50%);
+  width:80vw;height:60vh;
+  background:radial-gradient(ellipse at center,rgba(232,52,42,0.07) 0%,transparent 65%);
+}
+.ambient-2{
+  bottom:-20vh;right:-10vw;
+  width:50vw;height:50vh;
+  background:radial-gradient(ellipse at center,rgba(232,52,42,0.04) 0%,transparent 65%);
+}
+.ambient-3{
+  top:40%;left:-10vw;
+  width:40vw;height:60vh;
+  background:radial-gradient(ellipse at center,rgba(120,30,20,0.05) 0%,transparent 65%);
+}
 
-.ctitle{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:.5px;color:#fff;margin-bottom:.35rem}
-.cdesc{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:1.2rem;padding-bottom:1.2rem;border-bottom:.5px solid var(--border)}
+/* ── LAYOUT ────────────────────────────────────────── */
+.wrap{
+  position:relative;z-index:1;
+  max-width:900px;
+  margin:0 auto;
+  padding:0 1.5rem 5rem;
+}
 
-.sec-label{display:flex;align-items:center;gap:7px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#fff;margin-bottom:.65rem}
-.rdot{width:7px;height:7px;min-width:7px;background:var(--red);border-radius:50%;box-shadow:0 0 6px rgba(255,77,77,0.6)}
+/* ── NAV BAR ───────────────────────────────────────── */
+.navbar{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 1.5rem;
+  background:rgba(8,8,8,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  margin:0 -1.5rem 0;
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:22px;letter-spacing:3px;
+  color:var(--text);
+}
+.nav-logo span{color:var(--red)}
+.nav-tag{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--muted);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:4px;padding:4px 10px;
+}
 
-.pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1.2rem}
-.pill{background:rgba(255,255,255,0.07);border:.5px solid rgba(255,255,255,0.12);border-radius:6px;padding:5px 12px;font-size:12px;font-weight:700;color:#ccc;letter-spacing:.3px}
+/* ── HERO ──────────────────────────────────────────── */
+.hero{
+  text-align:center;
+  padding:5rem 1rem 3.5rem;
+  position:relative;
+}
 
-.blist{list-style:none;margin-bottom:.5rem}
-.blist li{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:#999;margin-bottom:7px;line-height:1.45}
-.blist li::before{content:'';width:6px;height:6px;min-width:6px;background:var(--red);border-radius:50%;margin-top:5px;box-shadow:0 0 5px rgba(255,77,77,0.5)}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:var(--red2);
+  background:rgba(232,52,42,0.08);
+  border:1px solid rgba(232,52,42,0.2);
+  border-radius:100px;
+  padding:6px 16px;
+  margin-bottom:2rem;
+}
+.hero-eyebrow::before{
+  content:'';width:6px;height:6px;
+  background:var(--red2);border-radius:50%;
+  animation:blink 2s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* DIVIDER */
-.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,77,77,0.3),transparent);margin:2.5rem 0}
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(72px,14vw,130px);
+  letter-spacing:2px;
+  line-height:.95;
+  margin-bottom:1.2rem;
+}
+.hero-title .t1{
+  display:block;
+  color:var(--text);
+  text-shadow:0 0 80px rgba(232,52,42,0.15);
+}
+.hero-title .t2{
+  display:block;
+  -webkit-text-stroke:1px rgba(255,255,255,0.15);
+  color:transparent;
+  letter-spacing:8px;
+  font-size:clamp(18px,3.5vw,28px);
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:900;
+  text-transform:uppercase;
+  margin-top:.5rem;
+}
+
+.hero-rule{
+  width:60px;height:2px;
+  background:linear-gradient(90deg,transparent,var(--red),transparent);
+  margin:.8rem auto 1.5rem;
+}
+
+.hero-sub{
+  font-size:16px;color:var(--muted2);
+  line-height:1.75;max-width:480px;margin:0 auto 3rem;
+  font-weight:400;
+}
+
+/* ── STATS ROW ─────────────────────────────────────── */
+.stats{
+  display:flex;align-items:stretch;justify-content:center;
+  gap:0;
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  background:var(--s1);
+  max-width:560px;
+  margin:0 auto;
+}
+.stat{
+  flex:1;
+  padding:1.3rem 1rem;
+  text-align:center;
+  position:relative;
+}
+.stat+.stat::before{
+  content:'';
+  position:absolute;left:0;top:20%;height:60%;width:1px;
+  background:var(--border);
+}
+.stat-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:36px;letter-spacing:1px;
+  color:var(--red2);
+  line-height:1;margin-bottom:4px;
+}
+.stat-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);
+}
+
+/* ── SECTION HEADER ────────────────────────────────── */
+.section-head{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:1.6rem;
+  padding-top:.5rem;
+}
+.sh-line{flex:1;height:1px;background:var(--border)}
+.sh-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  color:var(--muted);
+}
+
+/* ── TABS ──────────────────────────────────────────── */
+.tabs-outer{
+  margin-bottom:2rem;
+}
+.tabs-wrap{
+  display:flex;gap:6px;
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:6px;
+}
+.tab{
+  flex:1;
+  padding:12px 6px;
+  border:none;
+  border-radius:9px;
+  background:transparent;
+  color:var(--muted);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  cursor:pointer;
+  transition:all .22s;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  position:relative;
+}
+.tab-days{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:28px;letter-spacing:1px;
+  line-height:1;
+  color:var(--muted2);
+  transition:color .22s;
+}
+.tab-word{font-size:10px;letter-spacing:2px;opacity:.6}
+.tab.active{
+  background:var(--red);
+  color:#fff;
+  box-shadow:0 4px 24px rgba(232,52,42,0.35),0 0 0 1px rgba(255,90,78,0.3);
+}
+.tab.active .tab-days{color:#fff}
+.tab.active .tab-word{opacity:1}
+.tab:hover:not(.active){background:var(--s2);color:var(--muted2)}
+.tab:hover:not(.active) .tab-days{color:#ccc}
+
+/* ── PROGRAMS GRID ─────────────────────────────────── */
+.programs{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:14px;
+}
+@media(max-width:520px){.programs{grid-template-columns:1fr}}
+
+/* ── PROGRAM CARD ──────────────────────────────────── */
+.card{
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+  position:relative;
+  opacity:0;transform:translateY(16px);
+  animation:riseIn .4s cubic-bezier(.22,1,.36,1) forwards;
+  transition:border-color .25s,box-shadow .25s;
+}
+@keyframes riseIn{to{opacity:1;transform:translateY(0)}}
+.card:nth-child(1){animation-delay:.04s}
+.card:nth-child(2){animation-delay:.10s}
+.card:nth-child(3){animation-delay:.16s}
+.card:hover{
+  border-color:rgba(232,52,42,0.3);
+  box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(232,52,42,0.1),inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* card red left accent bar */
+.card::before{
+  content:'';
+  position:absolute;top:0;left:0;
+  width:3px;height:100%;
+  background:linear-gradient(180deg,var(--red),transparent);
+  opacity:0;
+  transition:opacity .3s;
+}
+.card:hover::before{opacity:1}
+
+.card-inner{padding:1.6rem 1.5rem 1.4rem}
+
+/* card number badge */
+.card-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:11px;letter-spacing:2px;
+  color:var(--muted);
+  margin-bottom:.9rem;
+  display:flex;align-items:center;gap:8px;
+}
+.card-num::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.card-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px;font-weight:900;letter-spacing:.3px;
+  color:var(--text);
+  margin-bottom:.5rem;
+  line-height:1.1;
+}
+.card-desc{
+  font-size:13px;color:var(--muted2);line-height:1.6;
+  margin-bottom:1.3rem;
+  padding-bottom:1.3rem;
+  border-bottom:1px solid var(--border);
+}
+
+/* DAYS PILLS */
+.days-row{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin-bottom:1.3rem;
+}
+.day-pill{
+  display:flex;align-items:center;gap:5px;
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:4px 10px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:.5px;
+  color:var(--muted2);
+}
+.day-pill i{font-size:11px;color:var(--red);opacity:.8}
+
+/* BENEFITS */
+.benefits{list-style:none;margin-bottom:0}
+.benefits li{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:12.5px;color:var(--muted2);
+  margin-bottom:6px;line-height:1.5;
+}
+.benefits li:last-child{margin-bottom:0}
+.bmark{
+  width:5px;height:5px;min-width:5px;
+  background:var(--red);border-radius:50%;
+  margin-top:6px;
+  box-shadow:0 0 6px rgba(232,52,42,0.6);
+}
+
+/* ── CTA BUTTON ────────────────────────────────────── */
+.card-footer{
+  padding:.9rem 1.5rem 1.4rem;
+  border-top:1px solid var(--border);
+}
+.show-exercises-btn{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  width:100%;
+  padding:11px 18px;
+  background:transparent;
+  border:1px solid rgba(232,52,42,0.35);
+  border-radius:10px;
+  color:var(--red2);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;
+  transition:all .22s;
+  position:relative;overflow:hidden;
+}
+.show-exercises-btn::after{
+  content:'';
+  position:absolute;inset:0;
+  background:var(--red);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+  z-index:0;
+}
+.show-exercises-btn:hover::after{transform:scaleX(1)}
+.show-exercises-btn:hover{border-color:var(--red);color:#fff;box-shadow:0 4px 20px rgba(232,52,42,0.3)}
+.show-exercises-btn span,.show-exercises-btn i{position:relative;z-index:1}
+.show-exercises-btn i{font-size:15px;transition:transform .3s}
+.show-exercises-btn:hover i{transform:rotate(12deg)}
+.btn-arrow{
+  margin-left:auto;
+  font-size:14px;
+  opacity:.5;
+  transition:opacity .2s,transform .2s;
+}
+.show-exercises-btn:hover .btn-arrow{opacity:1;transform:translateX(3px)}
+
+/* ── MODAL ─────────────────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,0.8);
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;
+  opacity:0;pointer-events:none;
+  transition:opacity .2s ease;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+
+.modal{
+  position:relative;
+  width:100%;max-width:640px;
+  max-height:90vh;
+  background:var(--s1);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:22px;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:0 40px 100px rgba(0,0,0,0.8),0 0 0 1px rgba(232,52,42,0.15),0 0 60px rgba(232,52,42,0.05);
+  transform:translateY(20px) scale(.98);
+  transition:transform .3s cubic-bezier(.34,1.3,.64,1),opacity .2s ease;
+  opacity:0;
+}
+.modal-overlay.open .modal{transform:translateY(0) scale(1);opacity:1}
+
+/* modal top chromebar */
+.modal-chrome{
+  height:3px;
+  background:linear-gradient(90deg,var(--red) 0%,var(--red2) 50%,transparent 100%);
+  flex-shrink:0;
+}
+
+.modal-header{
+  display:flex;align-items:center;gap:14px;
+  padding:1.3rem 1.6rem 1rem;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.modal-icon{
+  width:40px;height:40px;border-radius:10px;
+  background:rgba(232,52,42,0.12);
+  border:1px solid rgba(232,52,42,0.2);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.modal-icon i{font-size:18px;color:var(--red2)}
+.modal-title-wrap{flex:1}
+.modal-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+  color:var(--red2);margin-bottom:2px;
+}
+.modal-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:20px;font-weight:900;letter-spacing:.3px;
+  color:var(--text);line-height:1.1;
+}
+.modal-close{
+  width:34px;height:34px;border-radius:8px;
+  background:var(--s2);
+  border:1px solid var(--border);
+  color:var(--muted2);font-size:16px;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s;flex-shrink:0;
+}
+.modal-close:hover{background:rgba(232,52,42,0.15);border-color:rgba(232,52,42,0.4);color:#fff}
+
+.modal-body{
+  overflow-y:auto;
+  padding:1.4rem 1.6rem 2rem;
+  flex:1;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(232,52,42,0.25) transparent;
+}
+.modal-body::-webkit-scrollbar{width:3px}
+.modal-body::-webkit-scrollbar-thumb{background:rgba(232,52,42,0.25);border-radius:3px}
+
+/* DAY SECTION */
+.day-section{margin-bottom:1.6rem}
+.day-section:last-child{margin-bottom:0}
+
+.day-header{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:.9rem;
+}
+.day-icon{
+  width:28px;height:28px;border-radius:7px;
+  background:rgba(232,52,42,0.1);
+  border:1px solid rgba(232,52,42,0.18);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.day-icon i{font-size:13px;color:var(--red2)}
+.day-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;
+  color:#ccc;
+}
+.day-count{
+  margin-left:auto;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:1px;
+  color:var(--muted);
+}
+
+/* EXERCISE ROW */
+.exercise{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 13px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(255,255,255,0.05);
+  margin-bottom:5px;
+  transition:background .18s,border-color .18s,transform .18s;
+}
+.exercise:last-child{margin-bottom:0}
+.exercise:hover{
+  background:rgba(232,52,42,0.06);
+  border-color:rgba(232,52,42,0.18);
+  transform:translateX(2px);
+}
+.ex-num{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:13px;color:var(--muted);
+  min-width:18px;text-align:center;
+  flex-shrink:0;
+}
+.exercise-info{flex:1;min-width:0}
+.exercise-info h4{
+  font-size:13px;font-weight:700;
+  color:#ddd;
+  margin-bottom:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.exercise-info p{
+  font-size:11px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ex-sets{color:#bbb;font-weight:700}
+.ex-muscles{color:var(--muted)}
+
+.video-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 11px;
+  background:rgba(232,52,42,0.08);
+  border:1px solid rgba(232,52,42,0.2);
+  border-radius:7px;
+  color:var(--red2);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:all .18s;
+  flex-shrink:0;
+}
+.video-btn:hover{
+  background:rgba(232,52,42,0.2);
+  border-color:rgba(232,52,42,0.5);
+  color:#fff;
+}
+.video-btn i{font-size:11px}
+
+/* ── FOOTER ────────────────────────────────────────── */
+.site-footer{
+  text-align:center;
+  padding-top:3rem;
+  border-top:1px solid var(--border);
+  margin-top:4rem;
+}
+.footer-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:28px;letter-spacing:4px;
+  color:var(--muted);
+  margin-bottom:.5rem;
+}
+.footer-logo span{color:var(--red)}
+.footer-sub{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--muted);
+}
+
+/* ── RESPONSIVE ────────────────────────────────────── */
+@media(max-width:600px){
+  .stats{flex-direction:column;border-radius:12px}
+  .stat+.stat::before{width:60%;height:1px;top:0;left:20%;transform:none}
+  .tabs-wrap{gap:4px}
+  .tab-days{font-size:22px}
+  .modal{border-radius:18px}
+  .modal-header{padding:1.1rem 1.2rem .9rem}
+  .modal-body{padding:1.1rem 1.2rem 1.5rem}
+  .exercise{flex-wrap:wrap}
+  .exercise-info{min-width:calc(100% - 30px)}
+  .video-btn{margin-left:28px}
+}
 </style>
+</head>
+<body>
 
-<div class="bg-glow"></div>
-<div class="container">
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+<div class="ambient ambient-3"></div>
 
-  <div class="header">
-    <div class="badge"><i class="ti ti-barbell" aria-hidden="true"></i></div>
-    <div class="h-title">LKBOO<em>ORIA</em></div>
-    <div class="h-sub">Science-Based Workout Programs</div>
-    <div class="h-desc">Maximize muscle growth with optimal training frequency. Every program hits each muscle group at least twice per week for superior gains and faster results.</div>
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-chrome"></div>
+    <div class="modal-header">
+      <div class="modal-icon"><i class="ti ti-barbell" aria-hidden="true"></i></div>
+      <div class="modal-title-wrap">
+        <div class="modal-eyebrow">Exercise Breakdown</div>
+        <div class="modal-title" id="modal-title">Program</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <nav class="navbar">
+    <div class="nav-logo">LKB<span>OO</span>RIA</div>
+    <div class="nav-tag">Elite Training</div>
+    <button id="themeToggle" class="theme-btn">
+    <i class="ti ti-sun"></i>
+  </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">Science-Based Programming</div>
+    <h1 class="hero-title">
+      <span class="t1">LKBOORIA</span>
+      <span class="t2">Elite Workout Programs</span>
+    </h1>
+    <div class="hero-rule"></div>
+    <p class="hero-sub">Maximize muscle growth with optimal training frequency. Every program hits each muscle group at least twice per week for superior gains and faster results.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">11</div>
+        <div class="stat-label">Programs</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2×</div>
+        <div class="stat-label">Weekly Freq.</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">20+</div>
+        <div class="stat-label">Series/muscle</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELECTOR -->
+  <div class="section-head">
+    <div class="sh-line"></div>
+    <div class="sh-label">Choose Your Schedule</div>
+    <div class="sh-line"></div>
   </div>
 
-  <div class="feat-grid">
-    <div class="feat">
-      <div class="ficon"><i class="ti ti-target" aria-hidden="true"></i></div>
-      <div class="ftitle">2× Weekly Frequency</div>
-      <div class="fsub">Optimal muscle protein synthesis</div>
+  <div class="tabs-outer">
+    <div class="tabs-wrap" role="tablist">
+      <button class="tab active" onclick="setTab(0)" role="tab">
+        <div class="tab-days">3</div>
+        <div class="tab-word">Days / Week</div>
+      </button>
+      <button class="tab" onclick="setTab(1)" role="tab">
+        <div class="tab-days">4</div>
+        <div class="tab-word">Days / Week</div>
+      </button>
+      <button class="tab" onclick="setTab(2)" role="tab">
+        <div class="tab-days">5</div>
+        <div class="tab-word">Days / Week</div>
+      </button>
+      <button class="tab" onclick="setTab(3)" role="tab">
+        <div class="tab-days">6</div>
+        <div class="tab-word">Days / Week</div>
+      </button>
     </div>
-    <div class="feat">
-      <div class="ficon"><i class="ti ti-trending-up" aria-hidden="true"></i></div>
-      <div class="ftitle">Maximum Growth</div>
-      <div class="fsub">Evidence-based programming</div>
-    </div>
-    <div class="feat">
-      <div class="ficon"><i class="ti ti-calendar-stats" aria-hidden="true"></i></div>
-      <div class="ftitle">Flexible Options</div>
-      <div class="fsub">3–6 day programs available</div>
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <div class="tabs-wrap" role="tablist">
-    <button class="tab active" onclick="setTab(0)" role="tab"><i class="ti ti-calendar"></i> 3 DAYS</button>
-    <button class="tab" onclick="setTab(1)" role="tab"><i class="ti ti-calendar"></i> 4 DAYS</button>
-    <button class="tab" onclick="setTab(2)" role="tab"><i class="ti ti-calendar"></i> 5 DAYS</button>
-    <button class="tab" onclick="setTab(3)" role="tab"><i class="ti ti-calendar"></i> 6 DAYS</button>
   </div>
 
   <div class="programs" id="programs-grid"></div>
 
+  <footer class="site-footer">
+    <div class="footer-logo">LKB<span>OO</span>RIA</div>
+    <div class="footer-sub">Science · Strength · Results</div>
+  </footer>
+
 </div>
 
 <script>
-const data = {
-  0: [
-    {
-      title: "Upper / Lower / Full Body",
-      desc: "The most balanced 3-day split — each session targets your body from a different angle for complete stimulus and optimal recovery.",
-      days: ["Upper Body", "Lower Body", "Full Body"],
-      benefits: [
-        "Each muscle group hit 2–3× per week",
-        "Ideal for beginners and intermediates",
-        "Maximum recovery between heavy sessions",
-        "Balanced push/pull ratio"
-      ]
-    },
-    {
-      title: "Full Body 3×",
-      desc: "Three full-body sessions per week with compound movements. High frequency, low volume per session — perfect for natural lifters.",
-      days: ["Full Body A", "Full Body B", "Full Body C"],
-      benefits: [
-        "Highest training frequency per muscle",
-        "Compound-focused for maximum efficiency",
-        "Great for strength and muscle simultaneously",
-        "Proven for beginner hypertrophy"
-      ]
-    }
-  ],
-  1: [
-    {
-      title: "Upper / Lower (2×)",
-      desc: "The gold standard 4-day split. Upper and lower body trained twice each week with perfect balance of volume and recovery.",
-      days: ["Upper A", "Lower A", "Upper B", "Lower B"],
-      benefits: [
-        "Each muscle 2× per week",
-        "Optimal volume per session",
-        "Best hypertrophy split for intermediates",
-        "Easy to progress week over week"
-      ]
-    },
-    {
-      title: "Push / Pull / Legs + Full Body",
-      desc: "Three targeted sessions plus a full-body day for extra frequency on lagging muscles. Versatile and highly effective.",
-      days: ["Push", "Pull", "Legs", "Full Body"],
-      benefits: [
-        "High specialization + full body stimulus",
-        "Targets weak points with bonus session",
-        "Great for intermediate-advanced lifters",
-        "Flexible programming for any goal"
-      ]
-    },
-    {
-      title: "Arnold Split + Full Body",
-      desc: "Classic Arnold Split (Chest/Back, Shoulders/Arms, Legs) with an added full-body session for extra frequency and volume.",
-      days: ["Chest & Back", "Shoulders & Arms", "Legs", "Full Body"],
-      benefits: [
-        "Arnold's legendary chest/back superset pairing",
-        "Maximum upper body volume",
-        "Full body day locks in lagging areas",
-        "Advanced aesthetic-focused programming"
-      ]
-    }
-  ],
-  2: [
-    {
-      title: "Push / Pull / Legs + Upper / Lower",
-      desc: "Five days of elite programming. PPL for high volume, Upper/Lower for frequency. Each muscle trained 2–3× per week.",
-      days: ["Push", "Pull", "Legs", "Upper Body", "Lower Body"],
-      benefits: [
-        "Extremely high weekly training volume",
-        "Every muscle hit 2–3× per week",
-        "Best for advanced intermediate lifters",
-        "Science-backed hypertrophy protocol"
-      ]
-    },
-    {
-      title: "Arnold + Upper / Lower",
-      desc: "Arnold's classic 3-day foundation extended with two additional Upper/Lower sessions for maximum weekly frequency.",
-      days: ["Chest & Back", "Shoulders & Arms", "Legs", "Upper Body", "Lower Body"],
-      benefits: [
-        "Arnold split for upper body mass",
-        "Upper/Lower for frequency boost",
-        "Ideal for aesthetic physique building",
-        "High volume with structured recovery"
-      ]
-    },
-    {
-      title: "Upper / Lower × 2 + Full Body",
-      desc: "Two Upper/Lower cycles per week capped by a full-body session. Relentless frequency for dedicated muscle growth.",
-      days: ["Upper A", "Lower A", "Upper B", "Lower B", "Full Body"],
-      benefits: [
-        "Each muscle stimulated 3× per week",
-        "Progressive overload built into structure",
-        "Full body finisher maximizes weekly volume",
-        "Advanced lifters only"
-      ]
-    }
-  ],
-  3: [
-    {
-      title: "Push / Pull / Legs × 2",
-      desc: "The elite 6-day double PPL. Every muscle group trained twice a week at full volume. The pinnacle of hypertrophy programming.",
-      days: ["Push A", "Pull A", "Legs A", "Push B", "Pull B", "Legs B"],
-      benefits: [
-        "Maximum hypertrophy frequency",
-        "Each muscle 2× per week at high volume",
-        "Industry-standard for competitive bodybuilders",
-        "Advanced athletes only — elite recovery required"
-      ]
-    },
-    {
-      title: "Arnold Split × 2",
-      desc: "Arnold's legendary 6-day double split — the exact program the GOAT used to build the greatest physique in bodybuilding history.",
-      days: ["Chest & Back A", "Shoulders & Arms A", "Legs A", "Chest & Back B", "Shoulders & Arms B", "Legs B"],
-      benefits: [
-        "Arnold Schwarzenegger's actual training split",
-        "Massive chest/back superset synergy",
-        "Double frequency for arms and shoulders",
-        "Legendary aesthetic-focused programming"
-      ]
-    },
-    {
-      title: "PPL + Full Body + Push / Pull",
-      desc: "Six days of varied stimulus — three specialized sessions, one full body day, then two more targeted days. Never plateau again.",
-      days: ["Push", "Pull", "Legs", "Full Body", "Push B", "Pull B"],
-      benefits: [
-        "Maximum variation to prevent adaptation",
-        "Full body day maintains global stimulus",
-        "Push/Pull doubled for arms and chest",
-        "Best for breaking plateaus"
-      ]
-    }
-  ]
+function ytUrl(q){return'https://www.youtube.com/results?search_query='+encodeURIComponent(q+' exercise tutorial')}
+
+const exerciseData={
+"full_body_3x":[{day:"Full Body A / B / C",icon:"ti-repeat",exercises:[
+{name:"Barbell Squat",sets:"4×6–8",muscles:"Quads · Glutes · Lower Back",video:ytUrl("barbell squat")},
+{name:"Bench Press",sets:"4×6–8",muscles:"Chest · Front Delts · Triceps",video:ytUrl("bench press")},
+{name:"Barbell Row",sets:"4×8",muscles:"Back · Traps · Biceps",video:ytUrl("barbell row")},
+{name:"Military Press",sets:"3×8–10",muscles:"Shoulders · Triceps",video:ytUrl("overhead press barbell")},
+{name:"Barbell Curl",sets:"3×10–12",muscles:"Biceps",video:ytUrl("barbell curl")},
+{name:"Plank",sets:"3×30–45s",muscles:"Core · Abs",video:ytUrl("plank exercise")}]}],
+
+"upper_lower_full_3d":[
+{day:"Upper Body",icon:"ti-arrow-up",exercises:[
+{name:"Bench Press",sets:"4×6–8",muscles:"Chest · Front Delts · Triceps",video:ytUrl("bench press")},
+{name:"Barbell Row / T-Bar Row",sets:"4×8",muscles:"Back · Biceps",video:ytUrl("barbell row")},
+{name:"Military Press",sets:"3×8–10",muscles:"Shoulders",video:ytUrl("overhead press barbell")},
+{name:"Pull-ups / Lat Pulldown",sets:"3×8–10",muscles:"Lats · Biceps",video:ytUrl("pull up exercise")},
+{name:"Dumbbell Curl",sets:"3×10–12",muscles:"Biceps",video:ytUrl("dumbbell curl")},
+{name:"Triceps Cable Extension",sets:"3×10–12",muscles:"Triceps",video:ytUrl("triceps cable pushdown")}]},
+{day:"Lower Body",icon:"ti-arrow-down",exercises:[
+{name:"Squat / Leg Press",sets:"4×6–8",muscles:"Quads · Glutes",video:ytUrl("barbell squat")},
+{name:"Romanian Deadlift",sets:"3×8–10",muscles:"Hamstrings · Glutes · Lower Back",video:ytUrl("romanian deadlift")},
+{name:"Bulgarian Split Squat",sets:"3×10/leg",muscles:"Quads · Glutes",video:ytUrl("bulgarian split squat")},
+{name:"Lying Leg Curl",sets:"3×10–12",muscles:"Hamstrings",video:ytUrl("lying leg curl")},
+{name:"Standing Calf Raise",sets:"4×12–15",muscles:"Calves",video:ytUrl("calf raise")},
+{name:"Plank",sets:"3×45–60s",muscles:"Core · Abs",video:ytUrl("plank exercise")}]},
+{day:"Full Body",icon:"ti-body-scan",exercises:[
+{name:"Goblet Squat",sets:"3×10",muscles:"Quads · Glutes",video:ytUrl("goblet squat")},
+{name:"Bench Press",sets:"3×10",muscles:"Chest · Triceps",video:ytUrl("bench press")},
+{name:"Seated Cable Row",sets:"3×10",muscles:"Back · Biceps",video:ytUrl("seated cable row")},
+{name:"Dumbbell Military Press",sets:"3×12",muscles:"Shoulders",video:ytUrl("dumbbell overhead press")},
+{name:"Bulgarian Split Squat",sets:"3×10/leg",muscles:"Quads · Glutes",video:ytUrl("bulgarian split squat")}]}],
+
+"upper_lower_4d":[
+{day:"Upper A — Push Focus",icon:"ti-arrow-up",exercises:[
+{name:"Bench Press",sets:"4×6–8",muscles:"Chest · Front Delts · Triceps",video:ytUrl("bench press")},
+{name:"Military Press",sets:"3×8",muscles:"Shoulders · Triceps",video:ytUrl("overhead press barbell")},
+{name:"Dips",sets:"3×8",muscles:"Chest · Triceps",video:ytUrl("dips exercise")},
+{name:"Lateral Raise",sets:"3×12",muscles:"Side Delts",video:ytUrl("lateral raise")},
+{name:"Barbell Curl",sets:"3×10",muscles:"Biceps",video:ytUrl("barbell curl")},
+{name:"Triceps Barbell Extension",sets:"3×10",muscles:"Triceps",video:ytUrl("skull crusher triceps")}]},
+{day:"Lower A",icon:"ti-arrow-down",exercises:[
+{name:"Squat",sets:"4×6",muscles:"Quads · Glutes",video:ytUrl("barbell squat")},
+{name:"Romanian Deadlift",sets:"4×8",muscles:"Hamstrings · Glutes",video:ytUrl("romanian deadlift")},
+{name:"Leg Press",sets:"3×10",muscles:"Quads · Glutes",video:ytUrl("leg press machine")},
+{name:"Leg Curl",sets:"3×12",muscles:"Hamstrings",video:ytUrl("lying leg curl")},
+{name:"Calf Raise",sets:"4×15",muscles:"Calves",video:ytUrl("calf raise")}]},
+{day:"Upper B — Pull Focus",icon:"ti-arrow-up",exercises:[
+{name:"Pull-ups",sets:"4×6–8",muscles:"Lats · Biceps",video:ytUrl("pull up exercise")},
+{name:"Barbell Row",sets:"4×8",muscles:"Back · Biceps",video:ytUrl("barbell row")},
+{name:"Cable Pulldown",sets:"3×10",muscles:"Lats",video:ytUrl("lat pulldown cable")},
+{name:"Face Pull",sets:"3×12",muscles:"Rear Delts · Rotator Cuff",video:ytUrl("face pull exercise")},
+{name:"Incline Dumbbell Curl",sets:"3×10",muscles:"Biceps",video:ytUrl("incline dumbbell curl")},
+{name:"Triceps Cable Extension",sets:"3×12",muscles:"Triceps",video:ytUrl("triceps cable pushdown")}]},
+{day:"Lower B",icon:"ti-arrow-down",exercises:[
+{name:"Front Squat",sets:"3×8",muscles:"Quads · Core",video:ytUrl("front squat")},
+{name:"Forward Lunge",sets:"3×10/leg",muscles:"Quads · Glutes",video:ytUrl("forward lunge exercise")},
+{name:"Hip Thrust",sets:"3×10",muscles:"Glutes",video:ytUrl("hip thrust exercise")},
+{name:"Leg Extension",sets:"3×12",muscles:"Quads",video:ytUrl("leg extension machine")},
+{name:"Calf Raise",sets:"4×15",muscles:"Calves",video:ytUrl("calf raise")}]}],
+
+"ppl_full_4d":[
+{day:"Push",icon:"ti-arm",exercises:[
+{name:"Bench Press",sets:"4×6–8",muscles:"Chest · Triceps",video:ytUrl("bench press")},
+{name:"Incline Dumbbell Press",sets:"3×8–10",muscles:"Upper Chest",video:ytUrl("incline dumbbell press")},
+{name:"Military Press",sets:"3×8",muscles:"Shoulders · Triceps",video:ytUrl("overhead press barbell")},
+{name:"Dips",sets:"3×10",muscles:"Chest · Triceps",video:ytUrl("dips exercise")},
+{name:"Crunch",sets:"3×15",muscles:"Abs",video:ytUrl("crunch ab exercise")}]},
+{day:"Pull",icon:"ti-arrow-back-up",exercises:[
+{name:"Deadlift",sets:"4×5–6",muscles:"Back · Glutes · Hamstrings",video:ytUrl("deadlift barbell")},
+{name:"Supinated Pull-ups",sets:"4×8",muscles:"Lats · Biceps",video:ytUrl("pull up supinated grip")},
+{name:"One-Arm Dumbbell Row",sets:"3×10",muscles:"Back · Biceps",video:ytUrl("one arm dumbbell row")},
+{name:"EZ Bar Curl",sets:"3×12",muscles:"Biceps",video:ytUrl("ez bar curl")},
+{name:"Face Pull",sets:"3×12",muscles:"Rear Delts",video:ytUrl("face pull exercise")}]},
+{day:"Legs",icon:"ti-run",exercises:[
+{name:"Squat",sets:"4×6–8",muscles:"Quads · Glutes",video:ytUrl("barbell squat")},
+{name:"Lunge",sets:"3×10/leg",muscles:"Quads · Glutes",video:ytUrl("forward lunge exercise")},
+{name:"Romanian Deadlift",sets:"3×8",muscles:"Hamstrings · Glutes",video:ytUrl("romanian deadlift")},
+{name:"Leg Curl",sets:"3×12",muscles:"Hamstrings",video:ytUrl("lying leg curl")},
+{name:"Calf Raise",sets:"4×15",muscles:"Calves",video:ytUrl("calf raise")}]},
+{day:"Full Body",icon:"ti-body-scan",exercises:[
+{name:"Goblet Squat",sets:"3×10",muscles:"Quads · Glutes",video:ytUrl("goblet squat")},
+{name:"Bench Press",sets:"3×10",muscles:"Chest · Triceps",video:ytUrl("bench press")},
+{name:"Seated Cable Row",sets:"3×10",muscles:"Back · Biceps",video:ytUrl("seated cable row")},
+{name:"Dumbbell Military Press",sets:"3×12",muscles:"Shoulders",video:ytUrl("dumbbell overhead press")},
+{name:"Bulgarian Split Squat",sets:"3×10/leg",muscles:"Quads · Glutes",video:ytUrl("bulgarian split squat")}]}],
+
+"arnold_full_4d":[
+{day:"Arnold A — Chest & Back",icon:"ti-circles",exercises:[
+{name:"Bench Press",sets:"4×6–8",muscles:"Chest · Triceps",video:ytUrl("bench press")},
+{name:"Barbell Row",sets:"4×8",muscles:"Back · Biceps",video:ytUrl("barbell row")},
+{name:"Incline Dumbbell Press",sets:"3×8",muscles:"Upper Chest",video:ytUrl("incline dumbbell press")},
+{name:"Wide-Grip Lat Pulldown",sets:"3×8",muscles:"Lats",video:ytUrl("lat pulldown wide grip")},
+{name:"Cable Fly / Dumbbell Fly",sets:"3×12",muscles:"Chest",video:ytUrl("cable fly chest")},
+{name:"Supinated Pull-ups",sets:"3×max",muscles:"Lats · Biceps",video:ytUrl("pull up supinated grip")}]},
+{day:"Arnold B — Shoulders & Arms",icon:"ti-arrows-up-down",exercises:[
+{name:"Military Press",sets:"4×6–8",muscles:"Shoulders",video:ytUrl("overhead press barbell")},
+{name:"Barbell Curl",sets:"4×8–10",muscles:"Biceps",video:ytUrl("barbell curl")},
+{name:"Lateral Raise",sets:"3×12",muscles:"Side Delts",video:ytUrl("lateral raise")},
+{name:"Skull Crusher",sets:"3×10",muscles:"Triceps",video:ytUrl("skull crusher triceps")},
+{name:"Bent-Over Rear Delt Fly",sets:"3×12",muscles:"Rear Delts",video:ytUrl("bent over rear delt fly")},
+{name:"Shrugs",sets:"3×12",muscles:"Traps",video:ytUrl("barbell shrug")}]},
+{day:"Full Body (mid-week)",icon:"ti-body-scan",exercises:[
+{name:"Front Squat",sets:"3×8",muscles:"Quads · Core",video:ytUrl("front squat")},
+{name:"Dips",sets:"3×8",muscles:"Chest · Triceps",video:ytUrl("dips exercise")},
+{name:"Dumbbell Row",sets:"3×10",muscles:"Back · Biceps",video:ytUrl("one arm dumbbell row")},
+{name:"Arnold Press",sets:"3×10",muscles:"Shoulders",video:ytUrl("arnold press")},
+{name:"Stiff-Leg Deadlift (light)",sets:"3×8",muscles:"Hamstrings",video:ytUrl("stiff leg deadlift")}]},
+{day:"Arnold C — Legs",icon:"ti-run",exercises:[
+{name:"Squat",sets:"4×6–8",muscles:"Quads · Glutes",video:ytUrl("barbell squat")},
+{name:"Stiff-Leg Deadlift",sets:"4×8",muscles:"Hamstrings",video:ytUrl("stiff leg deadlift")},
+{name:"Leg Press",sets:"3×10",muscles:"Quads",video:ytUrl("leg press machine")},
+{name:"Bulgarian Split Squat",sets:"3×10/leg",muscles:"Quads · Glutes",video:ytUrl("bulgarian split squat")},
+{name:"Standing Calf Raise",sets:"4×15",muscles:"Calves",video:ytUrl("calf raise")},
+{name:"Crunch",sets:"3×15",muscles:"Abs",video:ytUrl("crunch ab exercise")}]}],
+
+"ppl_upper_lower_5d":[
+{day:"Upper Body",icon:"ti-arrow-up",exercises:[
+{name:"Bench Press",sets:"4×6–8",muscles:"Chest · Triceps",video:ytUrl("bench press")},
+{name:"Bent-Over Row",sets:"4×6–8",muscles:"Back · Biceps",video:ytUrl("bent over barbell row")},
+{name:"Military Press",sets:"3×8",muscles:"Shoulders",video:ytUrl("overhead press barbell")},
+{name:"Pronated Pull-ups",sets:"3×8",muscles:"Lats · Biceps",video:ytUrl("pull up exercise")},
+{name:"Incline Curl",sets:"3×10",muscles:"Biceps",video:ytUrl("incline dumbbell curl")},
+{name:"Triceps Pushdown",sets:"3×10",muscles:"Triceps",video:ytUrl("triceps cable pushdown")}]},
+{day:"Lower Body",icon:"ti-arrow-down",exercises:[
+{name:"Front Squat",sets:"4×6",muscles:"Quads · Core",video:ytUrl("front squat")},
+{name:"Romanian Deadlift",sets:"4×8",muscles:"Hamstrings · Glutes",video:ytUrl("romanian deadlift")},
+{name:"Seated Leg Curl",sets:"3×10",muscles:"Hamstrings",video:ytUrl("seated leg curl")},
+{name:"Bulgarian Split Squat",sets:"3×10/leg",muscles:"Quads · Glutes",video:ytUrl("bulgarian split squat")},
+{name:"Standing Calf Raise",sets:"4×15",muscles:"Calves",video:ytUrl("calf raise")}]},
+{day:"Push",icon:"ti-arm",exercises:[
+{name:"Bench Press",sets:"4×6–8",muscles:"Chest · Triceps",video:ytUrl("bench press")},
+{name:"Incline Dumbbell Press",sets:"3×8–10",muscles:"Upper Chest",video:ytUrl("incline dumbbell press")},
+{name:"Military Press",sets:"3×8",muscles:"Shoulders",video:ytUrl("overhead press barbell")},
+{name:"Dips",sets:"3×10",muscles:"Chest · Triceps",video:ytUrl("dips exercise")},
+{name:"Crunch",sets:"3×15",muscles:"Abs",video:ytUrl("crunch ab exercise")}]},
+{day:"Pull",icon:"ti-arrow-back-up",exercises:[
+{name:"Deadlift",sets:"4×5–6",muscles:"Back · Glutes · Hamstrings",video:ytUrl("deadlift barbell")},
+{name:"Supinated Pull-ups",sets:"4×8",muscles:"Lats · Biceps",video:ytUrl("pull up supinated grip")},
+{name:"One-Arm Dumbbell Row",sets:"3×10",muscles:"Back · Biceps",video:ytUrl("one arm dumbbell row")},
+{name:"EZ Bar Curl",sets:"3×12",muscles:"Biceps",video:ytUrl("ez bar curl")},
+{name:"Face Pull",sets:"3×12",muscles:"Rear Delts",video:ytUrl("face pull exercise")}]}],
+
+"arnold_upper_lower_5d":[
+{day:"Arnold A — Chest & Back",icon:"ti-circles",exercises:[
+{name:"Bench Press",sets:"4×6–8",muscles:"Chest · Triceps",video:ytUrl("bench press")},
+{name:"Barbell Row",sets:"4×8",muscles:"Back · Biceps",video:ytUrl("barbell row")},
+{name:"Incline Dumbbell Press",sets:"3×8",muscles:"Upper Chest",video:ytUrl("incline dumbbell press")},
+{name:"Wide-Grip Lat Pulldown",sets:"3×8",muscles:"Lats",video:ytUrl("lat pulldown wide grip")},
+{name:"Cable Fly",sets:"3×12",muscles:"Chest",video:ytUrl("cable fly chest")},
+{name:"Supinated Pull-ups",sets:"3×max",muscles:"Lats · Biceps",video:ytUrl("pull up supinated grip")}]},
+{day:"Arnold B — Shoulders & Arms",icon:"ti-arrows-up-down",exercises:[
+{name:"Military Press",sets:"4×6–8",muscles:"Shoulders",video:ytUrl("overhead press barbell")},
+{name:"Barbell Curl",sets:"4×8–10",muscles:"Biceps",video:ytUrl("barbell curl")},
+{name:"Lateral Raise",sets:"3×12",muscles:"Side Delts",video:ytUrl("lateral raise")},
+{name:"Skull Crusher",sets:"3×10",muscles:"Triceps",video:ytUrl("skull crusher triceps")},
+{name:"Bent-Over Rear Delt Fly",sets:"3×12",muscles:"Rear Delts",video:ytUrl("bent over rear delt fly")},
+{name:"Shrugs",sets:"3×12",muscles:"Traps",video:ytUrl("barbell shrug")}]},
+{day:"Arnold C — Legs",icon:"ti-run",exercises:[
+{name:"Squat",sets:"4×6–8",muscles:"Quads · Glutes",video:ytUrl("barbell squat")},
+{name:"Stiff-Leg Deadlift",sets:"4×8",muscles:"Hamstrings",video:ytUrl("stiff leg deadlift")},
+{name:"Leg Press",sets:"3×10",muscles:"Quads",video:ytUrl("leg press machine")},
+{name:"Bulgarian Split Squat",sets:"3×10/leg",muscles:"Quads · Glutes",video:ytUrl("bulgarian split squat")},
+{name:"Standing Calf Raise",sets:"4×15",muscles:"Calves",video:ytUrl("calf raise")},
+{name:"Crunch",sets:"3×15",muscles:"Abs",video:ytUrl("crunch ab exercise")}]},
+{day:"Upper Mix (Push + Pull)",icon:"ti-arrow-up",exercises:[
+{name:"Incline Dumbbell Press",sets:"3×8",muscles:"Upper Chest",video:ytUrl("incline dumbbell press")},
+{name:"Seated Cable Row",sets:"3×10",muscles:"Back · Biceps",video:ytUrl("seated cable row")},
+{name:"Seated OHP",sets:"3×8",muscles:"Shoulders",video:ytUrl("seated overhead press")},
+{name:"Hammer Curl",sets:"3×10",muscles:"Biceps · Brachialis",video:ytUrl("hammer curl")},
+{name:"Cable Dips / Triceps",sets:"3×12",muscles:"Triceps",video:ytUrl("triceps cable pushdown")}]},
+{day:"Lower Mix",icon:"ti-arrow-down",exercises:[
+{name:"Front Squat / Split Squat",sets:"3×8",muscles:"Quads",video:ytUrl("front squat")},
+{name:"Stiff-Leg Deadlift",sets:"3×8",muscles:"Hamstrings",video:ytUrl("stiff leg deadlift")},
+{name:"Lying Leg Curl",sets:"3×12",muscles:"Hamstrings",video:ytUrl("lying leg curl")},
+{name:"Forward Lunge",sets:"3×10/leg",muscles:"Quads · Glutes",video:ytUrl("forward lunge exercise")},
+{name:"Ab Circuit",sets:"3×15",muscles:"Abs",video:ytUrl("ab exercise")}]}],
+
+"upper_lower_x2_full_5d":[
+{day:"Upper A — Push Focus",icon:"ti-arrow-up",exercises:[
+{name:"Bench Press",sets:"4×6",muscles:"Chest · Triceps",video:ytUrl("bench press")},
+{name:"Incline Dumbbell Press",sets:"3×8",muscles:"Upper Chest",video:ytUrl("incline dumbbell press")},
+{name:"Arnold Press",sets:"3×10",muscles:"Shoulders",video:ytUrl("arnold press")},
+{name:"Dips",sets:"3×8",muscles:"Chest · Triceps",video:ytUrl("dips exercise")},
+{name:"Triceps Extension",sets:"3×12",muscles:"Triceps",video:ytUrl("triceps cable pushdown")}]},
+{day:"Lower A — Heavy",icon:"ti-arrow-down",exercises:[
+{name:"Squat",sets:"4×6",muscles:"Quads · Glutes",video:ytUrl("barbell squat")},
+{name:"Romanian Deadlift",sets:"3×8",muscles:"Hamstrings · Glutes",video:ytUrl("romanian deadlift")},
+{name:"Lunge",sets:"3×10/leg",muscles:"Quads · Glutes",video:ytUrl("forward lunge exercise")},
+{name:"Calf Raise",sets:"4×15",muscles:"Calves",video:ytUrl("calf raise")}]},
+{day:"Upper B — Pull Focus",icon:"ti-arrow-up",exercises:[
+{name:"Barbell Row",sets:"4×6–8",muscles:"Back · Biceps",video:ytUrl("barbell row")},
+{name:"Pull-ups",sets:"3×8",muscles:"Lats · Biceps",video:ytUrl("pull up exercise")},
+{name:"Lateral Raise",sets:"3×12",muscles:"Side Delts",video:ytUrl("lateral raise")},
+{name:"Barbell Curl",sets:"3×10",muscles:"Biceps",video:ytUrl("barbell curl")},
+{name:"Face Pull",sets:"3×12",muscles:"Rear Delts",video:ytUrl("face pull exercise")}]},
+{day:"Lower B — Volume",icon:"ti-arrow-down",exercises:[
+{name:"Leg Press",sets:"3×10",muscles:"Quads",video:ytUrl("leg press machine")},
+{name:"Stiff-Leg Deadlift",sets:"3×10",muscles:"Hamstrings",video:ytUrl("stiff leg deadlift")},
+{name:"Leg Curl",sets:"3×12",muscles:"Hamstrings",video:ytUrl("lying leg curl")},
+{name:"Abs",sets:"3×15",muscles:"Abs",video:ytUrl("ab exercise")}]},
+{day:"Full Body",icon:"ti-body-scan",exercises:[
+{name:"Squat",sets:"3×8",muscles:"Quads · Glutes",video:ytUrl("barbell squat")},
+{name:"Bench Press",sets:"3×8",muscles:"Chest · Triceps",video:ytUrl("bench press")},
+{name:"One-Arm Dumbbell Row",sets:"3×10",muscles:"Back · Biceps",video:ytUrl("one arm dumbbell row")},
+{name:"Dumbbell Press",sets:"3×10",muscles:"Shoulders",video:ytUrl("dumbbell overhead press")},
+{name:"Hip Thrust",sets:"3×12",muscles:"Glutes",video:ytUrl("hip thrust exercise")}]}],
+
+"ppl_x2_6d":[
+{day:"Push A",icon:"ti-arm",exercises:[
+{name:"Bench Press",sets:"4×6",muscles:"Chest · Triceps",video:ytUrl("bench press")},
+{name:"Overhead Press (OHP)",sets:"3×8",muscles:"Shoulders · Triceps",video:ytUrl("overhead press barbell")},
+{name:"Dips",sets:"3×10",muscles:"Chest · Triceps",video:ytUrl("dips exercise")},
+{name:"Triceps Extension",sets:"3×12",muscles:"Triceps",video:ytUrl("triceps cable pushdown")}]},
+{day:"Pull A",icon:"ti-arrow-back-up",exercises:[
+{name:"Pull-ups",sets:"4×6",muscles:"Lats · Biceps",video:ytUrl("pull up exercise")},
+{name:"Barbell Row",sets:"4×6",muscles:"Back · Biceps",video:ytUrl("barbell row")},
+{name:"Barbell Curl",sets:"3×10",muscles:"Biceps",video:ytUrl("barbell curl")},
+{name:"Face Pull",sets:"3×12",muscles:"Rear Delts",video:ytUrl("face pull exercise")}]},
+{day:"Legs A",icon:"ti-run",exercises:[
+{name:"Squat",sets:"4×6–8",muscles:"Quads · Glutes",video:ytUrl("barbell squat")},
+{name:"Leg Press",sets:"3×10",muscles:"Quads",video:ytUrl("leg press machine")},
+{name:"Leg Curl",sets:"3×12",muscles:"Hamstrings",video:ytUrl("lying leg curl")},
+{name:"Calf Raise",sets:"4×15",muscles:"Calves",video:ytUrl("calf raise")}]},
+{day:"Push B",icon:"ti-arm",exercises:[
+{name:"Incline Dumbbell Press",sets:"4×6",muscles:"Upper Chest",video:ytUrl("incline dumbbell press")},
+{name:"Arnold Press",sets:"3×8",muscles:"Shoulders",video:ytUrl("arnold press")},
+{name:"Lateral Raise",sets:"3×12",muscles:"Side Delts",video:ytUrl("lateral raise")},
+{name:"Triceps Cable Extension",sets:"3×12",muscles:"Triceps",video:ytUrl("triceps cable pushdown")}]},
+{day:"Pull B",icon:"ti-arrow-back-up",exercises:[
+{name:"Seated Cable Row",sets:"4×8",muscles:"Back · Biceps",video:ytUrl("seated cable row")},
+{name:"Dumbbell Row",sets:"3×10",muscles:"Back · Biceps",video:ytUrl("one arm dumbbell row")},
+{name:"Hammer Curl",sets:"3×12",muscles:"Biceps · Brachialis",video:ytUrl("hammer curl")},
+{name:"Face Pull",sets:"3×12",muscles:"Rear Delts",video:ytUrl("face pull exercise")}]},
+{day:"Legs B",icon:"ti-run",exercises:[
+{name:"Front Squat",sets:"3×8",muscles:"Quads · Core",video:ytUrl("front squat")},
+{name:"Hip Thrust",sets:"3×10",muscles:"Glutes",video:ytUrl("hip thrust exercise")},
+{name:"Bulgarian Split Squat",sets:"3×10/leg",muscles:"Quads · Glutes",video:ytUrl("bulgarian split squat")},
+{name:"Calf Raise",sets:"4×15",muscles:"Calves",video:ytUrl("calf raise")}]}],
+
+"arnold_x2_6d":[
+{day:"Chest & Back A",icon:"ti-circles",exercises:[
+{name:"Bench Press",sets:"5×5–6",muscles:"Chest · Triceps",video:ytUrl("bench press")},
+{name:"T-Bar Row",sets:"5×6–8",muscles:"Back · Biceps",video:ytUrl("t bar row exercise")},
+{name:"Incline Dumbbell Press",sets:"4×8",muscles:"Upper Chest",video:ytUrl("incline dumbbell press")},
+{name:"Pull-ups + Lat Pulldown",sets:"3×10",muscles:"Lats",video:ytUrl("lat pulldown cable")},
+{name:"Cable Fly",sets:"3×12",muscles:"Chest",video:ytUrl("cable fly chest")}]},
+{day:"Shoulders & Arms A",icon:"ti-arrows-up-down",exercises:[
+{name:"Military Press",sets:"5×5",muscles:"Shoulders",video:ytUrl("overhead press barbell")},
+{name:"Lateral Raise",sets:"4×10",muscles:"Side Delts",video:ytUrl("lateral raise")},
+{name:"Shrugs",sets:"3×12",muscles:"Traps",video:ytUrl("barbell shrug")},
+{name:"Barbell Curl",sets:"4×8",muscles:"Biceps",video:ytUrl("barbell curl")},
+{name:"Triceps Bar Extension",sets:"4×8",muscles:"Triceps",video:ytUrl("skull crusher triceps")},
+{name:"Bent-Over Rear Delt Fly",sets:"3×12",muscles:"Rear Delts",video:ytUrl("bent over rear delt fly")}]},
+{day:"Legs A",icon:"ti-run",exercises:[
+{name:"Front Squat",sets:"5×5–6",muscles:"Quads · Core",video:ytUrl("front squat")},
+{name:"Deadlift",sets:"5×5",muscles:"Back · Glutes · Hamstrings",video:ytUrl("deadlift barbell")},
+{name:"Leg Press",sets:"4×10",muscles:"Quads",video:ytUrl("leg press machine")},
+{name:"Lunge",sets:"3×12/leg",muscles:"Quads · Glutes",video:ytUrl("forward lunge exercise")},
+{name:"Calf Raise (seated+standing)",sets:"4×15",muscles:"Calves",video:ytUrl("calf raise")}]},
+{day:"Chest & Back B",icon:"ti-circles",exercises:[
+{name:"Dumbbell Bench Press",sets:"4×8",muscles:"Chest · Triceps",video:ytUrl("dumbbell bench press")},
+{name:"Dips",sets:"4×10",muscles:"Chest · Triceps",video:ytUrl("dips exercise")},
+{name:"Barbell Row",sets:"4×8",muscles:"Back · Biceps",video:ytUrl("barbell row")},
+{name:"Seated Cable Row",sets:"3×10",muscles:"Back · Biceps",video:ytUrl("seated cable row")},
+{name:"Dumbbell Fly",sets:"3×12",muscles:"Chest",video:ytUrl("dumbbell fly chest")}]},
+{day:"Shoulders & Arms B",icon:"ti-arrows-up-down",exercises:[
+{name:"Arnold Press",sets:"5×5",muscles:"Shoulders",video:ytUrl("arnold press")},
+{name:"Bent-Over Rear Delt Fly",sets:"4×10",muscles:"Rear Delts",video:ytUrl("bent over rear delt fly")},
+{name:"Incline Dumbbell Curl",sets:"3×12",muscles:"Biceps",video:ytUrl("incline dumbbell curl")},
+{name:"Cable Triceps Extension",sets:"3×12",muscles:"Triceps",video:ytUrl("triceps cable pushdown")}]},
+{day:"Legs B",icon:"ti-run",exercises:[
+{name:"Front Squat",sets:"5×5",muscles:"Quads · Core",video:ytUrl("front squat")},
+{name:"Hip Thrust",sets:"4×10",muscles:"Glutes",video:ytUrl("hip thrust exercise")},
+{name:"Bulgarian Split Squat",sets:"3×12/leg",muscles:"Quads · Glutes",video:ytUrl("bulgarian split squat")},
+{name:"Calf Raise",sets:"4×15",muscles:"Calves",video:ytUrl("calf raise")}]}],
+
+"ppl_full_push_pull_6d":[
+{day:"Push A",icon:"ti-arm",exercises:[
+{name:"Bench Press",sets:"4×6",muscles:"Chest · Triceps",video:ytUrl("bench press")},
+{name:"Incline Dumbbell Press",sets:"3×8",muscles:"Upper Chest",video:ytUrl("incline dumbbell press")},
+{name:"Overhead Press (OHP)",sets:"3×8",muscles:"Shoulders",video:ytUrl("overhead press barbell")},
+{name:"Dips",sets:"3×10",muscles:"Chest · Triceps",video:ytUrl("dips exercise")},
+{name:"Cable Triceps Pushdown",sets:"3×12",muscles:"Triceps",video:ytUrl("triceps cable pushdown")}]},
+{day:"Pull A",icon:"ti-arrow-back-up",exercises:[
+{name:"Pull-ups",sets:"4×6",muscles:"Lats · Biceps",video:ytUrl("pull up exercise")},
+{name:"Barbell Row",sets:"4×6",muscles:"Back · Biceps",video:ytUrl("barbell row")},
+{name:"Seated Cable Row",sets:"3×10",muscles:"Back · Biceps",video:ytUrl("seated cable row")},
+{name:"Barbell Curl",sets:"3×10",muscles:"Biceps",video:ytUrl("barbell curl")},
+{name:"Face Pull",sets:"3×12",muscles:"Rear Delts",video:ytUrl("face pull exercise")}]},
+{day:"Legs",icon:"ti-run",exercises:[
+{name:"Squat",sets:"4×6–8",muscles:"Quads · Glutes",video:ytUrl("barbell squat")},
+{name:"Leg Press",sets:"3×10",muscles:"Quads",video:ytUrl("leg press machine")},
+{name:"Romanian Deadlift",sets:"3×8",muscles:"Hamstrings · Glutes",video:ytUrl("romanian deadlift")},
+{name:"Leg Curl",sets:"3×12",muscles:"Hamstrings",video:ytUrl("lying leg curl")},
+{name:"Calf Raise",sets:"4×15",muscles:"Calves",video:ytUrl("calf raise")}]},
+{day:"Full Body",icon:"ti-body-scan",exercises:[
+{name:"Goblet Squat",sets:"3×10",muscles:"Quads · Glutes",video:ytUrl("goblet squat")},
+{name:"Bench Press",sets:"3×10",muscles:"Chest · Triceps",video:ytUrl("bench press")},
+{name:"Seated Cable Row",sets:"3×10",muscles:"Back · Biceps",video:ytUrl("seated cable row")},
+{name:"OHP Dumbbell",sets:"3×12",muscles:"Shoulders",video:ytUrl("dumbbell overhead press")},
+{name:"Hip Thrust",sets:"3×12",muscles:"Glutes",video:ytUrl("hip thrust exercise")}]},
+{day:"Push B",icon:"ti-arm",exercises:[
+{name:"Dumbbell Bench Press",sets:"4×8",muscles:"Chest · Triceps",video:ytUrl("dumbbell bench press")},
+{name:"Arnold Press",sets:"3×8",muscles:"Shoulders",video:ytUrl("arnold press")},
+{name:"Assisted Dips",sets:"3×10",muscles:"Chest · Triceps",video:ytUrl("dips exercise")},
+{name:"Triceps Extension",sets:"3×12",muscles:"Triceps",video:ytUrl("triceps cable pushdown")}]},
+{day:"Pull B",icon:"ti-arrow-back-up",exercises:[
+{name:"Cable Pulldown",sets:"4×10",muscles:"Lats",video:ytUrl("lat pulldown cable")},
+{name:"Dumbbell Row",sets:"3×10",muscles:"Back · Biceps",video:ytUrl("one arm dumbbell row")},
+{name:"Incline Dumbbell Curl",sets:"3×12",muscles:"Biceps",video:ytUrl("incline dumbbell curl")},
+{name:"Face Pull",sets:"3×12",muscles:"Rear Delts",video:ytUrl("face pull exercise")}]}]
 };
 
-let cur = 0;
+const programData={
+0:[
+{title:"Upper / Lower / Full Body",desc:"The most balanced 3-day split — each session targets your body from a different angle for complete stimulus and optimal recovery.",days:["Upper Body","Lower Body","Full Body"],benefits:["Each muscle group hit 2–3× per week","Ideal for beginners and intermediates","Maximum recovery between heavy sessions","Balanced push/pull ratio"],exerciseKey:"upper_lower_full_3d"},
+{title:"Full Body 3×",desc:"Three full-body sessions per week with compound movements. High frequency, low volume per session — perfect for natural lifters.",days:["Full Body A","Full Body B","Full Body C"],benefits:["Highest training frequency per muscle","Compound-focused for maximum efficiency","Great for strength and muscle simultaneously","Proven for beginner hypertrophy"],exerciseKey:"full_body_3x"}
+],
+1:[
+{title:"Upper / Lower (2×)",desc:"The gold standard 4-day split. Upper and lower body trained twice each week with perfect balance of volume and recovery.",days:["Upper A","Lower A","Upper B","Lower B"],benefits:["Each muscle 2× per week","Optimal volume per session","Best hypertrophy split for intermediates","Easy to progress week over week"],exerciseKey:"upper_lower_4d"},
+{title:"Push / Pull / Legs + Full Body",desc:"Three targeted sessions plus a full-body day for extra frequency on lagging muscles. Versatile and highly effective.",days:["Push","Pull","Legs","Full Body"],benefits:["High specialization + full body stimulus","Targets weak points with bonus session","Great for intermediate-advanced lifters","Flexible programming for any goal"],exerciseKey:"ppl_full_4d"},
+{title:"Arnold Split + Full Body",desc:"Classic Arnold Split (Chest/Back, Shoulders/Arms, Legs) with an added full-body session for extra frequency and volume.",days:["Chest & Back","Shoulders & Arms","Legs","Full Body"],benefits:["Arnold's legendary chest/back superset pairing","Maximum upper body volume","Full body day locks in lagging areas","Advanced aesthetic-focused programming"],exerciseKey:"arnold_full_4d"}
+],
+2:[
+{title:"Push / Pull / Legs + Upper / Lower",desc:"Five days of elite programming. PPL for high volume, Upper/Lower for frequency. Each muscle trained 2–3× per week.",days:["Push","Pull","Legs","Upper Body","Lower Body"],benefits:["Extremely high weekly training volume","Every muscle hit 2–3× per week","Best for advanced intermediate lifters","Science-backed hypertrophy protocol"],exerciseKey:"ppl_upper_lower_5d"},
+{title:"Arnold + Upper / Lower",desc:"Arnold's classic 3-day foundation extended with two additional Upper/Lower sessions for maximum weekly frequency.",days:["Chest & Back","Shoulders & Arms","Legs","Upper Body","Lower Body"],benefits:["Arnold split for upper body mass","Upper/Lower for frequency boost","Ideal for aesthetic physique building","High volume with structured recovery"],exerciseKey:"arnold_upper_lower_5d"},
+{title:"Upper / Lower × 2 + Full Body",desc:"Two Upper/Lower cycles per week capped by a full-body session. Relentless frequency for dedicated muscle growth.",days:["Upper A","Lower A","Upper B","Lower B","Full Body"],benefits:["Each muscle stimulated 3× per week","Progressive overload built into structure","Full body finisher maximizes weekly volume","Advanced lifters only"],exerciseKey:"upper_lower_x2_full_5d"}
+],
+3:[
+{title:"Push / Pull / Legs × 2",desc:"The elite 6-day double PPL. Every muscle group trained twice a week at full volume. The pinnacle of hypertrophy programming.",days:["Push A","Pull A","Legs A","Push B","Pull B","Legs B"],benefits:["Maximum hypertrophy frequency","Each muscle 2× per week at high volume","Industry-standard for competitive bodybuilders","Advanced athletes only — elite recovery required"],exerciseKey:"ppl_x2_6d"},
+{title:"Arnold Split × 2",desc:"Arnold's legendary 6-day double split — the exact program the GOAT used to build the greatest physique in bodybuilding history.",days:["Chest & Back A","Shoulders & Arms A","Legs A","Chest & Back B","Shoulders & Arms B","Legs B"],benefits:["Arnold Schwarzenegger's actual training split","Massive chest/back superset synergy","Double frequency for arms and shoulders","Legendary aesthetic-focused programming"],exerciseKey:"arnold_x2_6d"},
+{title:"PPL + Full Body + Push / Pull",desc:"Six days of varied stimulus — three specialized sessions, one full body day, then two more targeted days. Never plateau again.",days:["Push","Pull","Legs","Full Body","Push B","Pull B"],benefits:["Maximum variation to prevent adaptation","Full body day maintains global stimulus","Push/Pull doubled for arms and chest","Best for breaking plateaus"],exerciseKey:"ppl_full_push_pull_6d"}
+]
+};
 
-function renderCards() {
-  const grid = document.getElementById('programs-grid');
-  grid.innerHTML = '';
-  data[cur].forEach((p, i) => {
-    const pills = p.days.map(d => `<span class="pill">${d}</span>`).join('');
-    const bullets = p.benefits.map(b => `<li>${b}</li>`).join('');
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.style.animationDelay = (i * 0.08) + 's';
-    card.innerHTML = `
-      <div class="ctitle">${p.title}</div>
-      <div class="cdesc">${p.desc}</div>
-      <div class="sec-label"><span class="rdot"></span> Training Days</div>
-      <div class="pills">${pills}</div>
-      <div class="sec-label"><span class="rdot"></span> Key Benefits</div>
-      <ul class="blist">${bullets}</ul>
-    `;
+const dayIcons={
+  "Upper Body":"ti-arrow-up","Lower Body":"ti-arrow-down",
+  "Full Body A":"ti-body-scan","Full Body B":"ti-body-scan","Full Body C":"ti-body-scan","Full Body":"ti-body-scan",
+  "Push":"ti-arm","Pull":"ti-arrow-back-up","Legs":"ti-run",
+  "Push A":"ti-arm","Pull A":"ti-arrow-back-up","Legs A":"ti-run",
+  "Push B":"ti-arm","Pull B":"ti-arrow-back-up","Legs B":"ti-run",
+  "Upper A":"ti-arrow-up","Lower A":"ti-arrow-down",
+  "Upper B":"ti-arrow-up","Lower B":"ti-arrow-down",
+  "Chest & Back":"ti-circles","Shoulders & Arms":"ti-arrows-up-down",
+  "Chest & Back A":"ti-circles","Shoulders & Arms A":"ti-arrows-up-down",
+  "Chest & Back B":"ti-circles","Shoulders & Arms B":"ti-arrows-up-down",
+};
+function dayIcon(d){return dayIcons[d]||'ti-calendar'}
+
+let cur=0;
+
+function buildModal(key){
+  const days=exerciseData[key];
+  if(!days)return'<p style="color:#666;font-size:13px">No data.</p>';
+  return days.map(day=>`
+    <div class="day-section">
+      <div class="day-header">
+        <div class="day-icon"><i class="ti ${day.icon}" aria-hidden="true"></i></div>
+        <div class="day-label">${day.day}</div>
+        <div class="day-count">${day.exercises.length} exercises</div>
+      </div>
+      ${day.exercises.map((ex,i)=>`
+        <div class="exercise">
+          <div class="ex-num">${String(i+1).padStart(2,'0')}</div>
+          <div class="exercise-info">
+            <h4>${ex.name}</h4>
+            <p><span class="ex-sets">${ex.sets}</span><span class="ex-muscles"> · ${ex.muscles}</span></p>
+          </div>
+          <a class="video-btn" href="${ex.video}" target="_blank" rel="noopener">
+            <i class="ti ti-player-play" aria-hidden="true"></i>Watch
+          </a>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+function openModal(title,key){
+  document.getElementById('modal-title').textContent=title;
+  document.getElementById('modal-body').innerHTML=buildModal(key);
+  document.getElementById('modal-body').scrollTop=0;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function handleOverlayClick(e){if(e.target===document.getElementById('modal-overlay'))closeModal()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+function renderCards(){
+  const grid=document.getElementById('programs-grid');
+  grid.innerHTML='';
+  programData[cur].forEach((p,i)=>{
+    const pills=p.days.map(d=>`<div class="day-pill"><i class="ti ${dayIcon(d)}" aria-hidden="true"></i>${d}</div>`).join('');
+    const bens=p.benefits.map(b=>`<li><span class="bmark"></span>${b}</li>`).join('');
+    const card=document.createElement('div');
+    card.className='card';
+    card.style.animationDelay=(i*.07)+'s';
+    card.innerHTML=`
+      <div class="card-inner">
+        <div class="card-num">PROGRAM ${String(i+1).padStart(2,'0')}</div>
+        <div class="card-title">${p.title}</div>
+        <div class="card-desc">${p.desc}</div>
+        <div class="days-row">${pills}</div>
+        <ul class="benefits">${bens}</ul>
+      </div>
+      <div class="card-footer">
+        <button class="show-exercises-btn" onclick="openModal('${p.title.replace(/'/g,"\\'")}','${p.exerciseKey}')">
+          <i class="ti ti-barbell" aria-hidden="true"></i>
+          <span>Show Exercises</span>
+          <i class="ti ti-arrow-right btn-arrow" aria-hidden="true"></i>
+        </button>
+      </div>`;
     grid.appendChild(card);
   });
 }
 
-function setTab(i) {
-  cur = i;
-  document.querySelectorAll('.tab').forEach((t, j) => t.classList.toggle('active', j === i));
+function setTab(i){
+  cur=i;
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',j===i));
   renderCards();
 }
 
 renderCards();
+/* ==========================
+   DARK / LIGHT MODE
+========================== */
+
+const themeBtn = document.getElementById("themeToggle");
+const savedTheme = localStorage.getItem("theme");
+
+if(savedTheme === "light"){
+  document.body.classList.add("light");
+  themeBtn.innerHTML = '<i class="ti ti-moon"></i>';
+}
+
+themeBtn.addEventListener("click", () => {
+
+  document.body.classList.toggle("light");
+
+  if(document.body.classList.contains("light")){
+    localStorage.setItem("theme","light");
+    themeBtn.innerHTML = '<i class="ti ti-moon"></i>';
+  }else{
+    localStorage.setItem("theme","dark");
+    themeBtn.innerHTML = '<i class="ti ti-sun"></i>';
+  }
+
+});
 </script>
+</body>
+</html>
